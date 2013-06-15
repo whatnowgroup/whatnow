@@ -8,7 +8,11 @@
 
 #import "SalsaNowViewController.h"
 
-@implementation SalsaNowViewController
+#import <GoogleMaps/GoogleMaps.h>
+
+@implementation SalsaNowViewController {
+    GMSMapView *mapView_;
+}
 
 - (void)didReceiveMemoryWarning
 {
@@ -22,6 +26,9 @@
 {
     [super viewDidLoad];
 	// Do any additional setup after loading the view, typically from a nib.
+    responseData = [NSMutableData data];
+    NSURLRequest *request = [NSURLRequest requestWithURL:[NSURL URLWithString:@"http://connectwf.appspot.com/events.json"]];
+    [[NSURLConnection alloc] initWithRequest:request delegate:self];
 }
 
 - (void)viewDidUnload
@@ -55,6 +62,54 @@
 {
     // Return YES for supported orientations
     return (interfaceOrientation != UIInterfaceOrientationPortraitUpsideDown);
+}
+
+- (void)loadView {
+    // Create a GMSCameraPosition that tells the map to display the
+    // coordinate -33.86,151.20 at zoom level 6.
+    GMSCameraPosition *camera = [GMSCameraPosition cameraWithLatitude:-33.86
+                                                            longitude:151.20
+                                                                 zoom:6];
+    mapView_ = [GMSMapView mapWithFrame:CGRectZero camera:camera];
+    mapView_.myLocationEnabled = YES;
+    self.view = mapView_;
+    
+}
+
+- (void)connection:(NSURLConnection *)connection didReceiveResponse:(NSURLResponse *)response {
+	[responseData setLength:0];
+}
+
+- (void)connection:(NSURLConnection *)connection didReceiveData:(NSData *)data {
+	[responseData appendData:data];
+    
+}
+
+- (void)connection:(NSURLConnection *)connection didFailWithError:(NSError *)error {
+    UIAlertView *alert = [[UIAlertView alloc] initWithTitle:@"Error happened :O" message:@"An Error Occurred, zomg" delegate:self cancelButtonTitle:@"Cancel" otherButtonTitles:nil];
+    // optional - add more buttons:
+    [alert addButtonWithTitle:@"Yes"];
+    [alert show];
+}
+
+- (void)connectionDidFinishLoading:(NSURLConnection *)connection {
+    NSError *err = nil;
+    
+    NSArray *jsonArray = [NSJSONSerialization JSONObjectWithData: responseData options:NSJSONReadingMutableContainers error:&err];
+    
+    if (!jsonArray){
+        NSLog(@"Error parsing JSONL %@", err);
+    }
+    else{
+        for(NSDictionary *item in jsonArray)
+        {
+            GMSMarker *marker = [[GMSMarker alloc] init];
+            marker.position = CLLocationCoordinate2DMake([[item objectForKey:@"latitude"] doubleValue], [[item objectForKey:@"longtitude"] doubleValue]);
+            marker.title = [item objectForKey:@"event_name"];
+            marker.snippet = @"Australia";
+            marker.map = mapView_;
+        }
+    }
 }
 
 @end

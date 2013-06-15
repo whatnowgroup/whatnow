@@ -10,6 +10,9 @@
 
 #import "SalsaNowViewController.h"
 
+#import <GoogleMaps/GoogleMaps.h>
+
+
 @implementation SalsaNowAppDelegate
 
 @synthesize window = _window;
@@ -17,6 +20,7 @@
 
 - (BOOL)application:(UIApplication *)application didFinishLaunchingWithOptions:(NSDictionary *)launchOptions
 {
+    [GMSServices provideAPIKey:@"AIzaSyBlFr3aWIDQe9l9YtIPrydhn2HYiDmrcaw"];
     self.window = [[UIWindow alloc] initWithFrame:[[UIScreen mainScreen] bounds]];
     // Override point for customization after application launch.
     self.viewController = [[SalsaNowViewController alloc] initWithNibName:@"SalsaNowViewController" bundle:nil];

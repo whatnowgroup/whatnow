@@ -8,6 +8,8 @@
 
 #import <UIKit/UIKit.h>
 
-@interface SalsaNowViewController : UIViewController
+@interface SalsaNowViewController : UIViewController {
+    NSMutableData *responseData;
+}
 
 @end
