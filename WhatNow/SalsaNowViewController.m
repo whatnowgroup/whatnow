@@ -9,6 +9,7 @@
 #import "SalsaNowViewController.h"
 
 #import <GoogleMaps/GoogleMaps.h>
+#import <CoreLocation/CoreLocation.h>
 
 @implementation SalsaNowViewController {
     GMSMapView *mapView_;
@@ -27,6 +28,9 @@
     [super viewDidLoad];
 	// Do any additional setup after loading the view, typically from a nib.
     responseData = [NSMutableData data];
+    
+    // Note to Victa: We would perform our checks here to find a users' current location
+    // Use current location and a 10 KM radius to find out what's around them
     NSURLRequest *request = [NSURLRequest requestWithURL:[NSURL URLWithString:@"http://connectwf.appspot.com/events.json"]];
     [[NSURLConnection alloc] initWithRequest:request delegate:self];
 }
@@ -69,7 +73,7 @@
     // coordinate -33.86,151.20 at zoom level 6.
     GMSCameraPosition *camera = [GMSCameraPosition cameraWithLatitude:-33.86
                                                             longitude:151.20
-                                                                 zoom:6];
+                                                                 zoom:14];
     mapView_ = [GMSMapView mapWithFrame:CGRectZero camera:camera];
     mapView_.myLocationEnabled = YES;
     self.view = mapView_;
@@ -101,13 +105,27 @@
         NSLog(@"Error parsing JSONL %@", err);
     }
     else{
+        double lon = 0;
+        double lat = 0;
         for(NSDictionary *item in jsonArray)
         {
+            lat = [[item objectForKey:@"latitude"] doubleValue];
+            lon = [[item objectForKey:@"longtitude"] doubleValue];
             GMSMarker *marker = [[GMSMarker alloc] init];
-            marker.position = CLLocationCoordinate2DMake([[item objectForKey:@"latitude"] doubleValue], [[item objectForKey:@"longtitude"] doubleValue]);
+            marker.position = CLLocationCoordinate2DMake(lat, lon);
             marker.title = [item objectForKey:@"event_name"];
             marker.snippet = @"Australia";
             marker.map = mapView_;
+            
+        }
+        // i should use the user's actual location to centre the map!
+        // perhaps i should also indicate where a user is on the map?
+        if (lon != 0 && lat != 0)
+        {
+            GMSCameraPosition *sydney = [GMSCameraPosition cameraWithLatitude:lat
+                                                                    longitude:lon
+                                                                         zoom:14];
+            [mapView_ setCamera:sydney];
         }
     }
 }
