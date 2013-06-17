@@ -2,7 +2,7 @@ package models
 
 import play.api.libs.json._
 
-case class Task(id: Long, label: String)
+case class Task(event_name: String, longtitude: String, latitude: String)
 
 object Task {
   
@@ -15,9 +15,9 @@ object Task {
   implicit val taskFormat = Json.format[Task]
 
   def populate(): List[Task] = {
-    Task(1L, "Test") :: 
-    Task(2L, "Hello, World") :: 
-    Task(3L, "Hell yeah") :: 
+    Task("Salsa - M&M", "151.209493", "-33.859228") :: 
+    Task("Salsa @ Bar 100", "151.209388", "-33.858218") :: 
+    Task("Salsa @ Ivy", "151.207264", "-33.86663") :: 
     Nil
   }
 
