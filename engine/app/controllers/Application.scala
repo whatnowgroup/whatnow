@@ -23,16 +23,7 @@ object Application extends Controller {
     })).as("application/json")
   }
 
-  def newTask = Action { implicit request =>
-    taskForm.bindFromRequest.fold(
-      errors => BadRequest(views.html.index(Task.all(), errors)),
-      label => {
-        Task.create(label)
-        Redirect(routes.Application.tasks)
-      }
-    )
-
-  }
+  def newTask = TODO
 
   def deleteTask(id: Long) = TODO
   
