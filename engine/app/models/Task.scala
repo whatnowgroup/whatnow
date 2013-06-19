@@ -1,24 +1,52 @@
 package models
 
+import play.api.db._
 import play.api.libs.json._
+import play.api.Play.current
+import anorm._
+import anorm.SqlParser._
+import play.api.Logger
 
-case class Task(id: Long, eventName: String, longtitude: String, latitude: String)
+case class Task(id : Long, eventName : String, address : String, longtitude : String, latitude : String)
 
 object Task {
-  
-  def all(): List[Task] = populate
 
-  def create(eventName: String, longtitude: String, latitude: String) {}
+  def all() : List[Task] = populate
 
-  def delete(id: Long) {}
-  
-  implicit val taskFormat = Json.format[Task]
-
-  def populate(): List[Task] = {
-    Task(1L, "Salsa - M&M", "151.209493", "-33.859228") :: 
-    Task(2L, "Salsa @ Bar 100", "151.209388", "-33.858218") :: 
-    Task(3L, "Salsa @ Ivy", "151.207264", "-33.86663") :: 
-    Nil
+  def create(eventName : String, address : String, longitude : String, latitude : String): Unit = {
+    DB.withConnection { implicit connection => 
+      SQL(
+      """insert into events 
+          (event_name, event_address, event_latitude, event_longitude)
+          values
+          ({name}, {address}, {latitude}, {longitude})
+      """).on(
+          'name -> eventName,
+          'address -> address,
+          'latitude -> latitude,
+          'longitude -> longitude
+          ).executeUpdate()    
+    }
   }
 
+  def delete(id : Long) {}
+
+  implicit val taskFormat = Json.format[Task]
+
+  val deserialise = {
+    get[Long]("id") ~
+      get[String]("event_name") ~
+      get[String]("event_address") ~
+      get[String]("event_latitude") ~
+      get[String]("event_longitude") map {
+        case id ~ event_name ~ event_address ~ event_latitude ~ event_longitude =>
+          Task(id, event_name, event_address, event_latitude, event_longitude)
+      }
+  }
+
+  def populate() : List[Task] = {
+    DB.withConnection { implicit connection =>
+      SQL("select * from events;").as(Task.deserialise *)
+    }
+  }
 }
