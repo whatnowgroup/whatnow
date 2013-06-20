@@ -7,11 +7,19 @@ using System.Windows.Navigation;
 using Microsoft.Phone.Controls;
 using Microsoft.Phone.Shell;
 using SalsaNowWP8.Resources;
+using SalsaNowWP8.ViewModel;
+using Facebook.Client;
 
 namespace SalsaNowWP8
 {
     public partial class App : Application
     {
+
+        internal static string AccessToken = String.Empty;
+        internal static string FacebookId = String.Empty;
+        public static bool isAuthenticated = false;
+        public static FacebookSessionClient FacebookSessionClient = new FacebookSessionClient(Constants.FacebookAppId);
+
         /// <summary>
         /// Provides easy access to the root frame of the Phone Application.
         /// </summary>

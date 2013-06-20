@@ -18,6 +18,7 @@ using System.Windows.Media;
 using Microsoft.Phone.Maps.Controls;
 using System.Windows.Shapes;
 using SalsaNowWP8.Resources;
+using Facebook.Client;
 
 namespace SalsaNowWP8
 {
@@ -31,36 +32,43 @@ namespace SalsaNowWP8
             // Sample code to localize the ApplicationBar
             //BuildLocalizedApplicationBar();
             //showMyLocationOnMap();
-            getSomething();
+            //getSomething();
         }
 
-        private async void showMyLocationOnMap()
+        private FacebookSession session;
+
+        private async Task Authenticate()
         {
-            //Geolocator myLocator = new Geolocator();
-            //Geoposition myPosition = await myLocator.GetGeopositionAsync();
-            //Geocoordinate myCoordinate = myPosition.Coordinate;
-            //GeoCoordinate myGeoCoordinate = CoordinateConverter.ConvertGeocoordinate(myCoordinate);
-            //Map.Center = myGeoCoordinate;
-            //Map.ZoomLevel = 13;
+            string message = String.Empty;
+            try
+            {
+                session = await App.FacebookSessionClient.LoginAsync("user_about_me,read_stream");
+                App.AccessToken = session.AccessToken;
+                App.FacebookId = session.FacebookId;
 
-            //Ellipse myPoint = new Ellipse();
-            //myPoint.Fill = new SolidColorBrush(Colors.Blue);
-            //myPoint.Height = 20;
-            //myPoint.Width = 20;
-            //myPoint.Opacity = 50;
+                Debugger.Log(3, "warning", session.FacebookId);
 
-            //MapOverlay myLocationOverlay = new MapOverlay();
-            //myLocationOverlay.Content = myPoint;
-            //myLocationOverlay.PositionOrigin = new Point(0.5, 0.5);
-            //myLocationOverlay.GeoCoordinate = myGeoCoordinate;
-
-            //MapLayer myLocationLayer = new MapLayer();
-            //myLocationLayer.Add(myLocationOverlay);
-
-            //Map.Layers.Add(myLocationLayer);
-
+                var rootFrame = Application.Current.RootVisual as PhoneApplicationFrame;
+                if (rootFrame != null)
+                    rootFrame.GoBack();
+            }
+            catch (InvalidOperationException ex)
+            {
+                message = "Login failed, " + ex.Message;
+                MessageBox.Show(message);
+            }
         }
 
+        async private void facebookBtn_Click(object sender, RoutedEventArgs e)
+        {
+            if (!App.isAuthenticated)
+            {
+                App.isAuthenticated = true;
+                await Authenticate();
+            }
+        }
+
+        // Map stuff
         private void addCoordinateToMap(double latitude, double longitude)
         {
             Ellipse shape = new Ellipse();
@@ -84,13 +92,20 @@ namespace SalsaNowWP8
         {
             string url = "http://ec2-54-218-30-210.us-west-2.compute.amazonaws.com:9000/tasks";
             var httpWebRequest = HttpWebRequest.CreateHttp(url);
-            string response = await httpRequest(httpWebRequest);
-            string response1 = response.Replace("\\", "");
-            Debugger.Log(3, "Warning", response1);
-            JArray arr = JArray.Parse(response);
-            foreach (var e in arr)
+            try
             {
-                addCoordinateToMap(Double.Parse((string)e["latitude"]), Double.Parse((string)e["longtitude"]));
+                string response = await httpRequest(httpWebRequest);
+                string response1 = response.Replace("\\", "");
+                Debugger.Log(3, "Warning", response1);
+                JArray arr = JArray.Parse(response);
+                foreach (var e in arr)
+                {
+                    addCoordinateToMap(Double.Parse((string)e["latitude"]), Double.Parse((string)e["longtitude"]));
+                }
+            }
+            catch (WebException ex)
+            {
+                ;
             }
         }
 
