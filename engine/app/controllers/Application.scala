@@ -11,23 +11,19 @@ import models._
 
 object Application extends Controller {
 
-  val taskForm = Form("label" -> nonEmptyText)
-
   def index = Action {
-    Redirect(routes.Application.tasks)
+    Redirect(routes.Application.events)
   }
 
-  def tasks = Action {
-    Ok(Json.toJson(Task.all().map {
+  def events = Action {
+    Ok(Json.toJson(Event.all().map {
       t => Json.toJson(t)
     })).as("application/json")
   }
 
-  def newTask = Action { 
-    implicit request =>
-    Logger.debug(request.body.toString())
+  def newEvent = Action { implicit request =>
     request.body.asJson.map { json =>
-      Task.create(
+      Event.create(
           (json \ "eventName").as[String], 
           (json \ "address").as[String], 
           (json \ "latitude").as[String], 
@@ -39,6 +35,9 @@ object Application extends Controller {
     }
   }
 
-  def deleteTask(id : Long) = TODO
+  def deleteEvent(id : Long) = Action {
+    Event.delete(id)
+  	Ok("deleted")
+  }
 
 }
