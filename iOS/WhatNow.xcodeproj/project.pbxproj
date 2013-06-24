@@ -16,6 +16,26 @@
 		E211B03D1771D53F0068C9B7 /* Security.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = E211B03B1771D53F0068C9B7 /* Security.framework */; };
 		E211B03E1771D53F0068C9B7 /* Social.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = E211B03C1771D53F0068C9B7 /* Social.framework */; };
 		E211B0401771D5620068C9B7 /* libsqlite3.dylib in Frameworks */ = {isa = PBXBuildFile; fileRef = E211B03F1771D5620068C9B7 /* libsqlite3.dylib */; };
+		E23F926F17786E9D007C7FB9 /* 1-32.png in Resources */ = {isa = PBXBuildFile; fileRef = E23F925B17786E9D007C7FB9 /* 1-32.png */; };
+		E23F927017786E9D007C7FB9 /* 10+-32.png in Resources */ = {isa = PBXBuildFile; fileRef = E23F925C17786E9D007C7FB9 /* 10+-32.png */; };
+		E23F927117786E9D007C7FB9 /* 2-32.png in Resources */ = {isa = PBXBuildFile; fileRef = E23F925D17786E9D007C7FB9 /* 2-32.png */; };
+		E23F927217786E9D007C7FB9 /* 3-32.png in Resources */ = {isa = PBXBuildFile; fileRef = E23F925E17786E9D007C7FB9 /* 3-32.png */; };
+		E23F927317786E9D007C7FB9 /* 4-32.png in Resources */ = {isa = PBXBuildFile; fileRef = E23F925F17786E9D007C7FB9 /* 4-32.png */; };
+		E23F927417786E9D007C7FB9 /* 5-32.png in Resources */ = {isa = PBXBuildFile; fileRef = E23F926017786E9D007C7FB9 /* 5-32.png */; };
+		E23F927517786E9D007C7FB9 /* 6-32.png in Resources */ = {isa = PBXBuildFile; fileRef = E23F926117786E9D007C7FB9 /* 6-32.png */; };
+		E23F927617786E9D007C7FB9 /* 7-32.png in Resources */ = {isa = PBXBuildFile; fileRef = E23F926217786E9D007C7FB9 /* 7-32.png */; };
+		E23F927717786E9D007C7FB9 /* 8-32.png in Resources */ = {isa = PBXBuildFile; fileRef = E23F926317786E9D007C7FB9 /* 8-32.png */; };
+		E23F927817786E9D007C7FB9 /* 9-32.png in Resources */ = {isa = PBXBuildFile; fileRef = E23F926417786E9D007C7FB9 /* 9-32.png */; };
+		E23F927917786E9D007C7FB9 /* red1-32.png in Resources */ = {isa = PBXBuildFile; fileRef = E23F926517786E9D007C7FB9 /* red1-32.png */; };
+		E23F927A17786E9D007C7FB9 /* red10+-32.png in Resources */ = {isa = PBXBuildFile; fileRef = E23F926617786E9D007C7FB9 /* red10+-32.png */; };
+		E23F927B17786E9D007C7FB9 /* red2-32.png in Resources */ = {isa = PBXBuildFile; fileRef = E23F926717786E9D007C7FB9 /* red2-32.png */; };
+		E23F927C17786E9D007C7FB9 /* red3-32.png in Resources */ = {isa = PBXBuildFile; fileRef = E23F926817786E9D007C7FB9 /* red3-32.png */; };
+		E23F927D17786E9D007C7FB9 /* red4-32.png in Resources */ = {isa = PBXBuildFile; fileRef = E23F926917786E9D007C7FB9 /* red4-32.png */; };
+		E23F927E17786E9D007C7FB9 /* red5-32.png in Resources */ = {isa = PBXBuildFile; fileRef = E23F926A17786E9D007C7FB9 /* red5-32.png */; };
+		E23F927F17786E9D007C7FB9 /* red6-32.png in Resources */ = {isa = PBXBuildFile; fileRef = E23F926B17786E9D007C7FB9 /* red6-32.png */; };
+		E23F928017786E9D007C7FB9 /* red7-32.png in Resources */ = {isa = PBXBuildFile; fileRef = E23F926C17786E9D007C7FB9 /* red7-32.png */; };
+		E23F928117786E9D007C7FB9 /* red8-32.png in Resources */ = {isa = PBXBuildFile; fileRef = E23F926D17786E9D007C7FB9 /* red8-32.png */; };
+		E23F928217786E9D007C7FB9 /* red9-32.png in Resources */ = {isa = PBXBuildFile; fileRef = E23F926E17786E9D007C7FB9 /* red9-32.png */; };
 		E255C26E17738C6200E4E746 /* login-button-small.png in Resources */ = {isa = PBXBuildFile; fileRef = E255C26D17738C6200E4E746 /* login-button-small.png */; };
 		E2961BCB176C3C5E001918DF /* UIKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = E2961BCA176C3C5E001918DF /* UIKit.framework */; };
 		E2961BCF176C3C5E001918DF /* CoreGraphics.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = E2961BCE176C3C5E001918DF /* CoreGraphics.framework */; };
@@ -65,6 +85,26 @@
 		E211B03B1771D53F0068C9B7 /* Security.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Security.framework; path = System/Library/Frameworks/Security.framework; sourceTree = SDKROOT; };
 		E211B03C1771D53F0068C9B7 /* Social.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Social.framework; path = System/Library/Frameworks/Social.framework; sourceTree = SDKROOT; };
 		E211B03F1771D5620068C9B7 /* libsqlite3.dylib */ = {isa = PBXFileReference; lastKnownFileType = "compiled.mach-o.dylib"; name = libsqlite3.dylib; path = usr/lib/libsqlite3.dylib; sourceTree = SDKROOT; };
+		E23F925B17786E9D007C7FB9 /* 1-32.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "1-32.png"; sourceTree = "<group>"; };
+		E23F925C17786E9D007C7FB9 /* 10+-32.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "10+-32.png"; sourceTree = "<group>"; };
+		E23F925D17786E9D007C7FB9 /* 2-32.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "2-32.png"; sourceTree = "<group>"; };
+		E23F925E17786E9D007C7FB9 /* 3-32.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "3-32.png"; sourceTree = "<group>"; };
+		E23F925F17786E9D007C7FB9 /* 4-32.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "4-32.png"; sourceTree = "<group>"; };
+		E23F926017786E9D007C7FB9 /* 5-32.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "5-32.png"; sourceTree = "<group>"; };
+		E23F926117786E9D007C7FB9 /* 6-32.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "6-32.png"; sourceTree = "<group>"; };
+		E23F926217786E9D007C7FB9 /* 7-32.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "7-32.png"; sourceTree = "<group>"; };
+		E23F926317786E9D007C7FB9 /* 8-32.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "8-32.png"; sourceTree = "<group>"; };
+		E23F926417786E9D007C7FB9 /* 9-32.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "9-32.png"; sourceTree = "<group>"; };
+		E23F926517786E9D007C7FB9 /* red1-32.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "red1-32.png"; sourceTree = "<group>"; };
+		E23F926617786E9D007C7FB9 /* red10+-32.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "red10+-32.png"; sourceTree = "<group>"; };
+		E23F926717786E9D007C7FB9 /* red2-32.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "red2-32.png"; sourceTree = "<group>"; };
+		E23F926817786E9D007C7FB9 /* red3-32.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "red3-32.png"; sourceTree = "<group>"; };
+		E23F926917786E9D007C7FB9 /* red4-32.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "red4-32.png"; sourceTree = "<group>"; };
+		E23F926A17786E9D007C7FB9 /* red5-32.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "red5-32.png"; sourceTree = "<group>"; };
+		E23F926B17786E9D007C7FB9 /* red6-32.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "red6-32.png"; sourceTree = "<group>"; };
+		E23F926C17786E9D007C7FB9 /* red7-32.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "red7-32.png"; sourceTree = "<group>"; };
+		E23F926D17786E9D007C7FB9 /* red8-32.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "red8-32.png"; sourceTree = "<group>"; };
+		E23F926E17786E9D007C7FB9 /* red9-32.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "red9-32.png"; sourceTree = "<group>"; };
 		E255C26D17738C6200E4E746 /* login-button-small.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = "login-button-small.png"; path = "FacebookSDKResources.bundle/FBLoginView/images/login-button-small.png"; sourceTree = "<group>"; };
 		E2961BC6176C3C5E001918DF /* WhatNow.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = WhatNow.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		E2961BCA176C3C5E001918DF /* UIKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = UIKit.framework; path = System/Library/Frameworks/UIKit.framework; sourceTree = SDKROOT; };
@@ -143,9 +183,37 @@
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
+		E23F925A17786E9D007C7FB9 /* images */ = {
+			isa = PBXGroup;
+			children = (
+				E23F925B17786E9D007C7FB9 /* 1-32.png */,
+				E23F925C17786E9D007C7FB9 /* 10+-32.png */,
+				E23F925D17786E9D007C7FB9 /* 2-32.png */,
+				E23F925E17786E9D007C7FB9 /* 3-32.png */,
+				E23F925F17786E9D007C7FB9 /* 4-32.png */,
+				E23F926017786E9D007C7FB9 /* 5-32.png */,
+				E23F926117786E9D007C7FB9 /* 6-32.png */,
+				E23F926217786E9D007C7FB9 /* 7-32.png */,
+				E23F926317786E9D007C7FB9 /* 8-32.png */,
+				E23F926417786E9D007C7FB9 /* 9-32.png */,
+				E23F926517786E9D007C7FB9 /* red1-32.png */,
+				E23F926617786E9D007C7FB9 /* red10+-32.png */,
+				E23F926717786E9D007C7FB9 /* red2-32.png */,
+				E23F926817786E9D007C7FB9 /* red3-32.png */,
+				E23F926917786E9D007C7FB9 /* red4-32.png */,
+				E23F926A17786E9D007C7FB9 /* red5-32.png */,
+				E23F926B17786E9D007C7FB9 /* red6-32.png */,
+				E23F926C17786E9D007C7FB9 /* red7-32.png */,
+				E23F926D17786E9D007C7FB9 /* red8-32.png */,
+				E23F926E17786E9D007C7FB9 /* red9-32.png */,
+			);
+			path = images;
+			sourceTree = "<group>";
+		};
 		E2961BBB176C3C5E001918DF = {
 			isa = PBXGroup;
 			children = (
+				E23F925A17786E9D007C7FB9 /* images */,
 				E255C26D17738C6200E4E746 /* login-button-small.png */,
 				E2A4098D177325A3005D6A12 /* salsa-now.jpg */,
 				E211B03F1771D5620068C9B7 /* libsqlite3.dylib */,
@@ -317,6 +385,26 @@
 				E211B0351771D3500068C9B7 /* FacebookSDKResources.bundle in Resources */,
 				E2A4098E177325A3005D6A12 /* salsa-now.jpg in Resources */,
 				E255C26E17738C6200E4E746 /* login-button-small.png in Resources */,
+				E23F926F17786E9D007C7FB9 /* 1-32.png in Resources */,
+				E23F927017786E9D007C7FB9 /* 10+-32.png in Resources */,
+				E23F927117786E9D007C7FB9 /* 2-32.png in Resources */,
+				E23F927217786E9D007C7FB9 /* 3-32.png in Resources */,
+				E23F927317786E9D007C7FB9 /* 4-32.png in Resources */,
+				E23F927417786E9D007C7FB9 /* 5-32.png in Resources */,
+				E23F927517786E9D007C7FB9 /* 6-32.png in Resources */,
+				E23F927617786E9D007C7FB9 /* 7-32.png in Resources */,
+				E23F927717786E9D007C7FB9 /* 8-32.png in Resources */,
+				E23F927817786E9D007C7FB9 /* 9-32.png in Resources */,
+				E23F927917786E9D007C7FB9 /* red1-32.png in Resources */,
+				E23F927A17786E9D007C7FB9 /* red10+-32.png in Resources */,
+				E23F927B17786E9D007C7FB9 /* red2-32.png in Resources */,
+				E23F927C17786E9D007C7FB9 /* red3-32.png in Resources */,
+				E23F927D17786E9D007C7FB9 /* red4-32.png in Resources */,
+				E23F927E17786E9D007C7FB9 /* red5-32.png in Resources */,
+				E23F927F17786E9D007C7FB9 /* red6-32.png in Resources */,
+				E23F928017786E9D007C7FB9 /* red7-32.png in Resources */,
+				E23F928117786E9D007C7FB9 /* red8-32.png in Resources */,
+				E23F928217786E9D007C7FB9 /* red9-32.png in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

@@ -13,6 +13,7 @@
 
 @implementation SalsaNowViewController {
     GMSMapView *mapView_;
+    NSMutableDictionary * mutableDictionary;
 }
 
 - (void)didReceiveMemoryWarning
@@ -66,7 +67,8 @@
 }
 
 - (void)loadView {
-    [super loadView];    
+    [super loadView];
+    mutableDictionary = [NSMutableDictionary dictionary];
 }
 
 - (void)connection:(NSURLConnection *)connection didReceiveResponse:(NSURLResponse *)response {
@@ -104,7 +106,14 @@
             marker.position = CLLocationCoordinate2DMake(lat, lon);
             marker.title = [item objectForKey:@"event_name"];
             marker.snippet = @"Australia";
+            //[marker setValue:[item objectForKey:@"event_id"] forKey:@"id"];
             marker.map = mapView_;
+            if ([item objectForKey:@"attending"] != Nil && 1 == [[item objectForKey:@"attending"] integerValue])
+            {
+                marker.icon = [GMSMarker markerImageWithColor:[UIColor greenColor]];
+                //[marker setValue:@1 forKey:@"attending"];
+            }
+            [mutableDictionary setValue:item forKey:marker.title];
         }
         // i should use the user's actual location to centre the map!
         // perhaps i should also indicate where a user is on the map?
@@ -119,11 +128,20 @@
 }
 
 - (BOOL)mapView:(GMSMapView *)mapView didTapMarker:(GMSMarker *)marker {
-    
-    marker.icon = [GMSMarker markerImageWithColor:[UIColor greenColor]];
-    NSURLRequest *request = [NSURLRequest requestWithURL:[NSURL URLWithString:@"http://127.0.0.1:9000/attending/2/12345"]];
+    NSDictionary * item = [mutableDictionary objectForKey:marker.title];
+    if (item == Nil) return YES;
+    if ([item objectForKey:@"attending"] == Nil) // should set this on the result of calling attending on delegate
+        marker.icon = [GMSMarker markerImageWithColor:[UIColor greenColor]];
+    NSMutableString* urlString = [NSMutableString stringWithString:@"http://127.0.0.1:9000/attending/"];
+
+    NSString * eventId = [NSString stringWithFormat:@"%d", [[item objectForKey:@"event_id"] integerValue]];
+    [urlString appendString:eventId];
+    [urlString appendString:@"/"];
+    [urlString appendString:myUniqueId];
+    NSURLRequest *request = [NSURLRequest requestWithURL:[NSURL URLWithString:urlString]];
+    NSLog(urlString);
     [[NSURLConnection alloc] initWithRequest:request delegate:NULL];
-    return NO;
+    return YES;
 }
 
 -(void)loadMapView {
@@ -169,18 +187,23 @@
                                               // Note to Victa: We would perform our checks here to find a users' current location
                                               // Use current location and a 10 KM radius to find out what's around them
                                               [self loadMapView];
+                                              // i'll need myself, and the i'll need my friends
                                               FBRequest* friendsRequest = [FBRequest requestForMyFriends];
                                               [friendsRequest startWithCompletionHandler: ^(FBRequestConnection *connection,
                                                                                             NSDictionary* result,
                                                                                             NSError *error) {
                                                   NSArray* friends = [result objectForKey:@"data"];
                                                   NSLog(@"Found: %i friends", friends.count);
-                                                  NSMutableString *friendsList;
-                                                  for (NSDictionary<FBGraphUser>* friend in friends) {
-                                                      NSLog(@"I have a friend named %@ with id %@", friend.name, friend.id);
-                                                  }
+                                                  NSMutableString *friendsList = [NSMutableString stringWithString:@"http://127.0.0.1:9000/locations/"];
                                                   
-                                                  NSURLRequest *request = [NSURLRequest requestWithURL:[NSURL URLWithString:@"http://127.0.0.1:9000/locations/"]];
+                                                  for (NSDictionary<FBGraphUser>* friend in friends) {
+                                                      
+                                                      [friendsList appendFormat:@"%@,", friend.id];
+                                                  }
+                                                  [friendsList appendString:@"0"];
+                                                  NSLog(@"Sending URL request %@", friendsList);
+                                                  
+                                                  NSURLRequest *request = [NSURLRequest requestWithURL:[NSURL URLWithString:friendsList]];
                                                   [[NSURLConnection alloc] initWithRequest:request delegate:self];
                                               }];
                                               
