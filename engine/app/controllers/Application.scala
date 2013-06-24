@@ -20,14 +20,20 @@ object Application extends Controller {
       t => Json.toJson(t)
     })).as("application/json")
   }
+  
+  def eventsAround(userId: String, longitudeLeft: String, longitudeRight: String, latitudeLeft: String, latitudeRight: String) = Action {
+    Ok(Json.toJson(Event.eventsAround(userId, longitudeLeft, longitudeRight, latitudeLeft, latitudeRight).map {
+      t => Json.toJson(t)
+    })).as("application/json")
+  }
 
   def newEvent = Action { implicit request =>
     request.body.asJson.map { json =>
       Event.create(
-          (json \ "eventName").as[String], 
-          (json \ "address").as[String], 
-          (json \ "latitude").as[String], 
-          (json \ "longitude").as[String])
+        (json \ "eventName").as[String],
+        (json \ "address").as[String],
+        (json \ "latitude").as[String],
+        (json \ "longitude").as[String])
       Ok("done")
     }.getOrElse {
       Logger.debug(request.body.toString())
@@ -37,7 +43,29 @@ object Application extends Controller {
 
   def deleteEvent(id : Long) = Action {
     Event.delete(id)
-  	Ok("deleted")
+    Ok("deleted")
+  }
+
+  def locations(friendsList : String) = Action {
+    val events = Event.all()
+    if (!friendsList.isEmpty()) {
+      val friendsAttend = Event.list((friendsList.split(",")).toList)
+      println(friendsAttend)
+    }
+    Ok(Json.parse("[" +
+      "{\"event_id\" : 1, \"event_name\" : \"Salsa\", \"event_address\" : \"M&M\", \"longitude\" : 151.209493, \"latitude\" : -33.859228, \"attending\" : 1}," +
+      "{\"event_id\" : 2, \"event_name\" : \"Salsa\", \"event_address\" : \"Bar 100\", \"longitude\" : 151.209388, \"latitude\" : -33.858218}, " +
+      "{\"event_id\" : 3, \"event_name\" : \"Salsa\", \"event_address\" : \"Ivy\", \"longitude\" : 151.207264, \"latitude\" : -33.86663}]"))
+  }
+
+  def attending(eventId : Int, userId : String) = Action {
+    Attendee.attending(userId, eventId);
+    Ok(Json.parse("{\"result\" : \"ok\"}"));
+  }
+
+  def unattending(eventId : Int, userId : String) = Action {
+    Attendee.unattending(userId, eventId);
+    Ok(Json.parse("{\"result\" : \"ok\"}"));
   }
 
 }

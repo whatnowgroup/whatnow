@@ -9,6 +9,23 @@ GET     /                           controllers.Application.index
 GET     /events                      controllers.Application.events
 POST    /events                      controllers.Application.newEvent
 POST    /events/:id/delete           controllers.Application.deleteEvent(id: Long)
+GET     /events/:id/:longitudeLeft/:longitudeRight/:latitudeLeft/:latitudeRight    controllers.Application.eventsAround(id, longitudeLeft, longitudeRight, latitudeLeft, latitudeRight) 
 
 # Map static resources from the /public folder to the /assets URL path
 GET     /assets/*file               controllers.Assets.at(path="/public", file)
+
+# Fetch all locations within 10 km given a lon and lat
+GET     /locations/:friendsList controllers.Application.locations(friendsList:String)
+
+# Fetch all locations within 10 km (browse mode)
+GET     /locations/ controllers.Application.locations(friendsList="")
+
+# Register interest in attending an event
+GET     /attending/:eventId/:userId     controllers.Application.attending(eventId:Int, userId:String)
+
+# De-register interest in attending an event
+GET /unattending/:eventId/:userId       controllers.Application.unattending(eventId:Int, userId:String)
+
+# Given a list of friends, give me all the friends who are attending events in a 10KM radius of my supplied lon/lat arguments
+#GET    /friendsAttending/:friendsList  controllers.Application.friendsAttending(friendsList:String)
+
