@@ -19,6 +19,7 @@ using Microsoft.Phone.Maps.Controls;
 using System.Windows.Shapes;
 using SalsaNowWP8.Resources;
 using Facebook.Client;
+using Microsoft.Phone.Maps.Toolkit;
 
 namespace SalsaNowWP8
 {
@@ -32,7 +33,7 @@ namespace SalsaNowWP8
             // Sample code to localize the ApplicationBar
             //BuildLocalizedApplicationBar();
             //showMyLocationOnMap();
-            //getSomething();
+            getSomething();
         }
 
         private FacebookSession session;
@@ -69,17 +70,28 @@ namespace SalsaNowWP8
         }
 
         // Map stuff
-        private void addCoordinateToMap(double latitude, double longitude)
+        private void addCoordinateToMap(string name, string address, double latitude, double longitude)
         {
-            Ellipse shape = new Ellipse();
-            shape.Fill = new SolidColorBrush(Colors.Blue);
-            shape.Height = 16;
-            shape.Width = 16;
-            shape.Opacity = 80;
+            //Ellipse shape = new Ellipse();
+            //shape.Fill = new SolidColorBrush(Colors.Blue);
+            //shape.Height = 16;
+            //shape.Width = 16;
+            //shape.Opacity = 80;
+
+            
+            //overlay.Content = shape;
+            //overlay.PositionOrigin = new Point(0.5, 0.5);
+            //overlay.GeoCoordinate = new GeoCoordinate(latitude, longitude);
+
+            //UserLocationMarker marker = (UserLocationMarker)this.FindName("UserLocationMarker");
+            //marker.GeoCoordinate = Map.Center;
+
+            Pushpin pushpin = new Pushpin();
+            pushpin.Content = name + " @ " + address;
+            pushpin.Tap += say;
 
             MapOverlay overlay = new MapOverlay();
-            overlay.Content = shape;
-            overlay.PositionOrigin = new Point(0.5, 0.5);
+            overlay.Content = pushpin;
             overlay.GeoCoordinate = new GeoCoordinate(latitude, longitude);
 
             MapLayer layer = new MapLayer();
@@ -88,9 +100,14 @@ namespace SalsaNowWP8
             Map.Layers.Add(layer);
         }
 
+        async private void say(object sender, RoutedEventArgs e)
+        {
+            MessageBox.Show("hih");
+        }
+
         private async void getSomething()
         {
-            string url = "http://ec2-54-218-30-210.us-west-2.compute.amazonaws.com:9000/tasks";
+            string url = "http://123.243.70.36:9000/events";
             var httpWebRequest = HttpWebRequest.CreateHttp(url);
             try
             {
@@ -100,7 +117,7 @@ namespace SalsaNowWP8
                 JArray arr = JArray.Parse(response);
                 foreach (var e in arr)
                 {
-                    addCoordinateToMap(Double.Parse((string)e["latitude"]), Double.Parse((string)e["longtitude"]));
+                    addCoordinateToMap((string)e["eventName"], (string)e["address"], Double.Parse((string)e["latitude"]), Double.Parse((string)e["longitude"]));
                 }
             }
             catch (WebException ex)
