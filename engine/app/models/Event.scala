@@ -8,7 +8,7 @@ import anorm.SqlParser._
 import play.api.Logger
 import models._
 
-case class Event(id : Long, eventName : String, address : String, longitude : String, latitude : String, attending: Boolean = false)
+case class Event(id : Long, eventName : String, address : String, latitude: String, longitude: String, attending: Boolean = false)
 
 object Event {
 
