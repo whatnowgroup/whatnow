@@ -20,6 +20,8 @@ using System.Windows.Shapes;
 using SalsaNowWP8.Resources;
 using Facebook.Client;
 using Microsoft.Phone.Maps.Toolkit;
+using System.Windows.Media.Imaging;
+using Microsoft.Expression.Interactivity.Core;
 
 namespace SalsaNowWP8
 {
@@ -86,23 +88,31 @@ namespace SalsaNowWP8
             //UserLocationMarker marker = (UserLocationMarker)this.FindName("UserLocationMarker");
             //marker.GeoCoordinate = Map.Center;
 
-            Pushpin pushpin = new Pushpin();
-            pushpin.Content = name + " @ " + address;
-            pushpin.Tap += say;
+            //Pushpin pushpin = new Pushpin();
+            //pushpin.Content = name + " @ " + address;
+            //BitmapImage bitmap = new BitmapImage();
+            //bitmap.CreateOptions = BitmapCreateOptions.None;
+            //bitmap.UriSource = new Uri("/Assets/1-32.png", UriKind.Relative);
+            //pushpin.Content = bitmap;
+            //pushpin.Tap += say;
+
+            var image = new Image { Source = new BitmapImage(new Uri("/Assets/pin_sq_down.32.png", UriKind.Relative)) };
+            image.Tap += say;
 
             MapOverlay overlay = new MapOverlay();
-            overlay.Content = pushpin;
+            overlay.Content = image;
             overlay.GeoCoordinate = new GeoCoordinate(latitude, longitude);
 
             MapLayer layer = new MapLayer();
             layer.Add(overlay);
 
             Map.Layers.Add(layer);
+         
         }
 
         async private void say(object sender, RoutedEventArgs e)
         {
-            MessageBox.Show("hih");
+            VisualStateManager.GoToState(this, "TapOnPush", true);
         }
 
         private async void getSomething()
