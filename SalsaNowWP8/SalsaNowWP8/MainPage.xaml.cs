@@ -113,6 +113,7 @@ namespace SalsaNowWP8
             //pushpin.Tap += say;
 
             var image = new Image { Source = new BitmapImage(new Uri("/Assets/pin_sq_down.32.png", UriKind.Relative)) };
+            image.Opacity = .5;
             image.Tap += say;
 
             MapOverlay overlay = new MapOverlay();

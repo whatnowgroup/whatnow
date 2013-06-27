@@ -69,11 +69,11 @@
 
         <!--ContentPanel - place additional content here-->
         <Grid x:Name="ContentPanel" Grid.Row="1" Margin="12,0,12,0">
-            <i:Interaction.Triggers>
+            <!--<i:Interaction.Triggers>
                 <i:EventTrigger EventName="MouseLeftButtonDown">
                     <ec:GoToStateAction StateName="TapOnPush"/>
                 </i:EventTrigger>
-            </i:Interaction.Triggers>
+            </i:Interaction.Triggers>-->
             <maps:Map x:Name="Map" Margin="0,0,0,10" LandmarksEnabled="False" Loaded="Map_Loaded"
 				Center="-33.868999,151.209183" ZoomLevel="14"/>
         </Grid>
