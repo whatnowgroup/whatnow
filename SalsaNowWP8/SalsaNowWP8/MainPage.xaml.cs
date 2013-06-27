@@ -27,6 +27,9 @@ namespace SalsaNowWP8
 {
     public partial class MainPage : PhoneApplicationPage
     {
+
+        private static bool DetailPageLoaded = false;
+
         // Constructor
         public MainPage()
         {
@@ -35,7 +38,20 @@ namespace SalsaNowWP8
             // Sample code to localize the ApplicationBar
             //BuildLocalizedApplicationBar();
             //showMyLocationOnMap();
+            //setupMap();
             getSomething();
+        }
+
+        private void setupMap()
+        {
+            Map.Tap += (a, b) => {
+                    foreach (VisualStateGroup g in VisualStateManager.GetVisualStateGroups(LayoutRoot))
+                    {
+                        if (g.Name == "Normal" && g.CurrentState.Equals("OnlyMap"))
+                            return;
+                    }
+                    VisualStateManager.GoToState(this, "OnlyMap", true);
+            };
         }
 
         private FacebookSession session;
