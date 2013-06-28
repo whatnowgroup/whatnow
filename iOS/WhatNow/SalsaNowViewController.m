@@ -87,6 +87,25 @@
     [alert show];
 }
 
+- (void)processMarker:(NSDictionary *)item marker:(GMSMarker *)marker {
+    int result = [[item objectForKey:@"friends"] integerValue];
+    if (result >= 10)
+        result = 10;
+    if ([item objectForKey:@"attending"] != Nil && 1 == [[item objectForKey:@"attending"] integerValue])
+    {
+        //marker.icon = [GMSMarker markerImageWithColor:[UIColor greenColor]];
+        
+        NSString * str = [NSString stringWithFormat:@"%i-32", result];
+        marker.icon = [UIImage imageNamed:str];
+        //[marker setValue:@1 forKey:@"attending"];
+    }
+    else
+    {
+        NSString * str = [NSString stringWithFormat:@"red%i-32", result];
+        marker.icon = [UIImage imageNamed:str];
+    }
+}
+
 - (void)connectionDidFinishLoading:(NSURLConnection *)connection {
     NSError *err = nil;
     
@@ -108,11 +127,7 @@
             marker.snippet = @"Australia";
             //[marker setValue:[item objectForKey:@"event_id"] forKey:@"id"];
             marker.map = mapView_;
-            if ([item objectForKey:@"attending"] != Nil && 1 == [[item objectForKey:@"attending"] integerValue])
-            {
-                marker.icon = [GMSMarker markerImageWithColor:[UIColor greenColor]];
-                //[marker setValue:@1 forKey:@"attending"];
-            }
+            [self processMarker:item marker:marker];
             [mutableDictionary setValue:item forKey:marker.title];
         }
         // i should use the user's actual location to centre the map!
@@ -130,17 +145,23 @@
 - (BOOL)mapView:(GMSMapView *)mapView didTapMarker:(GMSMarker *)marker {
     NSDictionary * item = [mutableDictionary objectForKey:marker.title];
     if (item == Nil) return YES;
-    if ([item objectForKey:@"attending"] == Nil) // should set this on the result of calling attending on delegate
-        marker.icon = [GMSMarker markerImageWithColor:[UIColor greenColor]];
-    NSMutableString* urlString = [NSMutableString stringWithString:@"http://127.0.0.1:9000/attending/"];
+    if ([item objectForKey:@"attending"] == Nil || [[item objectForKey:@"attending"] integerValue] == 0) // should set this on the result of calling attending on delegate
+    {
+        
+        [item setValue:@1 forKey:@"attending"];
+        [self processMarker:item marker:marker];
+    
+        NSMutableString* urlString = [NSMutableString stringWithString:@"http://127.0.0.1:9000/attending/"];
 
-    NSString * eventId = [NSString stringWithFormat:@"%d", [[item objectForKey:@"event_id"] integerValue]];
-    [urlString appendString:eventId];
-    [urlString appendString:@"/"];
-    [urlString appendString:myUniqueId];
-    NSURLRequest *request = [NSURLRequest requestWithURL:[NSURL URLWithString:urlString]];
-    NSLog(urlString);
-    [[NSURLConnection alloc] initWithRequest:request delegate:NULL];
+        NSString * eventId = [NSString stringWithFormat:@"%d", [[item objectForKey:@"event_id"] integerValue]];
+        [urlString appendString:eventId];
+        [urlString appendString:@"/"];
+        [urlString appendString:myUniqueId];
+        NSURLRequest *request = [NSURLRequest requestWithURL:[NSURL URLWithString:urlString]];
+        NSLog(urlString);
+        [[NSURLConnection alloc] initWithRequest:request delegate:NULL];
+        
+    }
     return YES;
 }
 

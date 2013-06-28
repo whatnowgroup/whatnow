@@ -47,24 +47,11 @@
          ignoreCount = "0"
          continueAfterRunningActions = "No"
          filePath = "WhatNow/SalsaNowViewController.m"
-         timestampString = "393754803.81115"
+         timestampString = "393770507.619301"
          startingColumnNumber = "9223372036854775807"
          endingColumnNumber = "9223372036854775807"
-         startingLineNumber = "109"
-         endingLineNumber = "109"
-         landmarkName = "-connectionDidFinishLoading:"
-         landmarkType = "5">
-      </FileBreakpoint>
-      <FileBreakpoint
-         shouldBeEnabled = "No"
-         ignoreCount = "0"
-         continueAfterRunningActions = "No"
-         filePath = "WhatNow/SalsaNowViewController.m"
-         timestampString = "393756503.953883"
-         startingColumnNumber = "9223372036854775807"
-         endingColumnNumber = "9223372036854775807"
-         startingLineNumber = "143"
-         endingLineNumber = "143"
+         startingLineNumber = "162"
+         endingLineNumber = "162"
          landmarkName = "-mapView:didTapMarker:"
          landmarkType = "5">
       </FileBreakpoint>
@@ -73,24 +60,11 @@
          ignoreCount = "0"
          continueAfterRunningActions = "No"
          filePath = "WhatNow/SalsaNowViewController.m"
-         timestampString = "393755509.188461"
+         timestampString = "393770401.05712"
          startingColumnNumber = "9223372036854775807"
          endingColumnNumber = "9223372036854775807"
-         startingLineNumber = "135"
-         endingLineNumber = "135"
-         landmarkName = "-mapView:didTapMarker:"
-         landmarkType = "5">
-      </FileBreakpoint>
-      <FileBreakpoint
-         shouldBeEnabled = "No"
-         ignoreCount = "0"
-         continueAfterRunningActions = "No"
-         filePath = "WhatNow/SalsaNowViewController.m"
-         timestampString = "393756714.600088"
-         startingColumnNumber = "9223372036854775807"
-         endingColumnNumber = "9223372036854775807"
-         startingLineNumber = "137"
-         endingLineNumber = "137"
+         startingLineNumber = "147"
+         endingLineNumber = "147"
          landmarkName = "-mapView:didTapMarker:"
          landmarkType = "5">
       </FileBreakpoint>
