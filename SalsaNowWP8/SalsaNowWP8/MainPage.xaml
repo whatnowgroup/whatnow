@@ -85,6 +85,7 @@
             <TextBlock Name="DetailPanelEventName" HorizontalAlignment="Left" Margin="10,168,0,0" TextWrapping="Wrap" Text="TextBlock" VerticalAlignment="Top" Height="67" Width="330"/>
             <Button Content="Attend" HorizontalAlignment="Left" Margin="340,163,0,0" VerticalAlignment="Top"/>
             <TextBlock Name="DetailPanelEventDescription" HorizontalAlignment="Left" Margin="10,240,0,0" TextWrapping="Wrap" Text="TextBlock" VerticalAlignment="Top" Height="215" Width="440"/>
+            <Image Name="DetailPanelEventImage" HorizontalAlignment="Left" Height="148" Margin="10,10,0,0" VerticalAlignment="Top" Width="440"/>
         </Grid>
 
     </Grid>

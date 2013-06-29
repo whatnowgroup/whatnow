@@ -140,6 +140,10 @@ namespace SalsaNowWP8
             {
                 wnEvent = PinToEventMap[(Image)sender];
                 DetailPanelEventName.Text = wnEvent.Name + " @ " + wnEvent.Address;
+
+                BitmapImage image = new BitmapImage();
+
+                DetailPanelEventImage.Source = new BitmapImage(new Uri("/Assets/pin_sq_down.32.png", UriKind.Relative));
             }
 
         }
