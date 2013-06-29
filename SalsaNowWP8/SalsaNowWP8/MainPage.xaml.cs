@@ -22,6 +22,7 @@ using Facebook.Client;
 using Microsoft.Phone.Maps.Toolkit;
 using System.Windows.Media.Imaging;
 using Microsoft.Expression.Interactivity.Core;
+using SalsaNowWP8.ViewModel;
 
 namespace SalsaNowWP8
 {
@@ -29,6 +30,8 @@ namespace SalsaNowWP8
     {
 
         private static bool DetailPageLoaded = false;
+        private TranslateTransform move = new TranslateTransform();
+        private Dictionary<Image, Event> PinToEventMap = new Dictionary<Image, Event>();
 
         // Constructor
         public MainPage()
@@ -38,20 +41,42 @@ namespace SalsaNowWP8
             // Sample code to localize the ApplicationBar
             //BuildLocalizedApplicationBar();
             //showMyLocationOnMap();
-            //setupMap();
-            getSomething();
+        //    setupMap();
+            setupDetailPanel();
+            ReadEvents();
+        }
+
+        private void setupDetailPanel()
+        {
+            DetailPanel.ManipulationDelta += (s, e) =>
+            {
+                move.X = e.DeltaManipulation.Translation.X;
+                move.Y = e.DeltaManipulation.Translation.Y;
+            };
+
+            DetailPanel.ManipulationDelta += (s, e) =>
+            {
+                if (move.Y > 3)
+                    GotoOnlyMapState();
+            };
         }
 
         private void setupMap()
         {
+            //VisualStateManager.GoToState(this, "OnlyMap", true);
             Map.Tap += (a, b) => {
                     foreach (VisualStateGroup g in VisualStateManager.GetVisualStateGroups(LayoutRoot))
                     {
                         if (g.Name == "Normal" && g.CurrentState.Equals("OnlyMap"))
                             return;
                     }
-                    VisualStateManager.GoToState(this, "OnlyMap", true);
+                    GotoOnlyMapState();
             };
+        }
+
+        private void GotoOnlyMapState()
+        {
+            VisualStateManager.GoToState(this, "OnlyMap", true);
         }
 
         private FacebookSession session;
@@ -88,37 +113,17 @@ namespace SalsaNowWP8
         }
 
         // Map stuff
-        private void addCoordinateToMap(string name, string address, double latitude, double longitude)
+        private void addCoordinateToMap(Event e)
         {
-            //Ellipse shape = new Ellipse();
-            //shape.Fill = new SolidColorBrush(Colors.Blue);
-            //shape.Height = 16;
-            //shape.Width = 16;
-            //shape.Opacity = 80;
-
-            
-            //overlay.Content = shape;
-            //overlay.PositionOrigin = new Point(0.5, 0.5);
-            //overlay.GeoCoordinate = new GeoCoordinate(latitude, longitude);
-
-            //UserLocationMarker marker = (UserLocationMarker)this.FindName("UserLocationMarker");
-            //marker.GeoCoordinate = Map.Center;
-
-            //Pushpin pushpin = new Pushpin();
-            //pushpin.Content = name + " @ " + address;
-            //BitmapImage bitmap = new BitmapImage();
-            //bitmap.CreateOptions = BitmapCreateOptions.None;
-            //bitmap.UriSource = new Uri("/Assets/1-32.png", UriKind.Relative);
-            //pushpin.Content = bitmap;
-            //pushpin.Tap += say;
-
             var image = new Image { Source = new BitmapImage(new Uri("/Assets/pin_sq_down.32.png", UriKind.Relative)) };
             image.Opacity = .5;
-            image.Tap += say;
+            image.Tap += TapOnPushpinEvent;
+
+            PinToEventMap.Add(image, e);
 
             MapOverlay overlay = new MapOverlay();
             overlay.Content = image;
-            overlay.GeoCoordinate = new GeoCoordinate(latitude, longitude);
+            overlay.GeoCoordinate = new GeoCoordinate(e.Latitude, e.Longitude);
 
             MapLayer layer = new MapLayer();
             layer.Add(overlay);
@@ -127,24 +132,37 @@ namespace SalsaNowWP8
          
         }
 
-        async private void say(object sender, RoutedEventArgs e)
+        async private void TapOnPushpinEvent(object sender, RoutedEventArgs e)
         {
             VisualStateManager.GoToState(this, "TapOnPush", true);
+            Event wnEvent;
+            if (PinToEventMap.ContainsKey((Image)sender))
+            {
+                wnEvent = PinToEventMap[(Image)sender];
+                DetailPanelEventName.Text = wnEvent.Name + " @ " + wnEvent.Address;
+            }
+
         }
 
-        private async void getSomething()
+        private async void ReadEvents()
         {
-            string url = "http://123.243.70.36:9000/events";
+            string url = Constants.EventsSource;
             var httpWebRequest = HttpWebRequest.CreateHttp(url);
             try
             {
                 string response = await httpRequest(httpWebRequest);
-                string response1 = response.Replace("\\", "");
-                Debugger.Log(3, "Warning", response1);
                 JArray arr = JArray.Parse(response);
                 foreach (var e in arr)
                 {
-                    addCoordinateToMap((string)e["eventName"], (string)e["address"], Double.Parse((string)e["latitude"]), Double.Parse((string)e["longitude"]));
+                    Event wnEvent = new Event();
+
+                    wnEvent.ID = (long)e["id"];
+                    wnEvent.Name = (string)e["eventName"];
+                    wnEvent.Address = (string)e["address"];
+                    wnEvent.Longitude = Double.Parse((string)e["longitude"]);
+                    wnEvent.Latitude = Double.Parse((string)e["latitude"]);
+
+                    addCoordinateToMap(wnEvent);
                 }
             }
             catch (WebException ex)

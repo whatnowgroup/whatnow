@@ -26,9 +26,9 @@
                 </VisualStateGroup.Transitions>
                 <VisualState x:Name="OnlyMap"/>
                 <VisualState x:Name="TapOnPush">
-                	<Storyboard>
-                		<DoubleAnimation Duration="0" To="-440" Storyboard.TargetProperty="(UIElement.Projection).(PlaneProjection.GlobalOffsetY)" Storyboard.TargetName="grid" d:IsOptimized="True"/>
-                	</Storyboard>
+                    <Storyboard>
+                        <DoubleAnimation Duration="0" To="-440" Storyboard.TargetProperty="(UIElement.Projection).(PlaneProjection.GlobalOffsetY)" Storyboard.TargetName="DetailPanel" d:IsOptimized="True"/>
+                    </Storyboard>
                 </VisualState>
             </VisualStateGroup>
         </VisualStateManager.VisualStateGroups>
@@ -78,14 +78,13 @@
 				Center="-33.868999,151.209183" ZoomLevel="14"/>
         </Grid>
         <Button x:Name="facebookBtn" Content="F" HorizontalAlignment="Left" Margin="410,-6,0,0" VerticalAlignment="Top" Click="facebookBtn_Click"/>
-        <Grid x:Name="grid" HorizontalAlignment="Left" Height="465" Margin="10,668,0,-437" Grid.Row="1" VerticalAlignment="Top" Width="460" Background="#993A3737">
-        	<Grid.Projection>
-        		<PlaneProjection/>
-        	</Grid.Projection>
-            <Image HorizontalAlignment="Left" Height="153" Margin="10,10,0,0" VerticalAlignment="Top" Width="440"/>
-            <TextBlock HorizontalAlignment="Left" Margin="10,168,0,0" TextWrapping="Wrap" Text="TextBlock" VerticalAlignment="Top" Height="67" Width="330"/>
-            <Button Content="Button" HorizontalAlignment="Left" Margin="340,163,0,0" VerticalAlignment="Top"/>
-            <TextBlock HorizontalAlignment="Left" Margin="10,240,0,0" TextWrapping="Wrap" Text="TextBlock" VerticalAlignment="Top" Height="215" Width="440"/>
+        <Grid x:Name="DetailPanel" HorizontalAlignment="Left" Height="465" Margin="10,668,0,-437" Grid.Row="1" VerticalAlignment="Top" Width="460" Background="#993A3737">
+            <Grid.Projection>
+                <PlaneProjection/>
+            </Grid.Projection>
+            <TextBlock Name="DetailPanelEventName" HorizontalAlignment="Left" Margin="10,168,0,0" TextWrapping="Wrap" Text="TextBlock" VerticalAlignment="Top" Height="67" Width="330"/>
+            <Button Content="Attend" HorizontalAlignment="Left" Margin="340,163,0,0" VerticalAlignment="Top"/>
+            <TextBlock Name="DetailPanelEventDescription" HorizontalAlignment="Left" Margin="10,240,0,0" TextWrapping="Wrap" Text="TextBlock" VerticalAlignment="Top" Height="215" Width="440"/>
         </Grid>
 
     </Grid>
