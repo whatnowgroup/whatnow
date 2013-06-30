@@ -16,7 +16,7 @@ object Attendee {
   def attending(userId : String, event : Long) = {
     DB.withConnection { implicit connection =>
       SQL(
-        "insert into attendees values ({eventid}, {userid});")
+        "insert into attendees (event_id, user_id) values ({eventid}, {userid});")
         .on('eventid -> event, 'userid -> userId).executeUpdate
     }
   }
