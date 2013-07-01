@@ -1,27 +1,19 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Linq;
 using System.Net;
 using System.Windows;
 using System.Windows.Controls;
-using System.Windows.Navigation;
 using System.Threading.Tasks;
 using Microsoft.Phone.Controls;
-using Microsoft.Phone.Shell;
 using Microsoft.Phone.Maps;
 using System.IO;
 using Newtonsoft.Json.Linq;
 using System.Diagnostics;
-using Windows.Devices.Geolocation;
 using System.Device.Location;
 using System.Windows.Media;
 using Microsoft.Phone.Maps.Controls;
-using System.Windows.Shapes;
-using SalsaNowWP8.Resources;
 using Facebook.Client;
-using Microsoft.Phone.Maps.Toolkit;
 using System.Windows.Media.Imaging;
-using Microsoft.Expression.Interactivity.Core;
 using SalsaNowWP8.ViewModel;
 
 namespace SalsaNowWP8
@@ -105,11 +97,10 @@ namespace SalsaNowWP8
 
         async private void facebookBtn_Click(object sender, RoutedEventArgs e)
         {
-            if (!App.isAuthenticated)
-            {
-                App.isAuthenticated = true;
-                await Authenticate();
-            }
+            if (App.isAuthenticated) 
+                return;
+            App.isAuthenticated = true;
+            await Authenticate();
         }
 
         // Map stuff
@@ -136,16 +127,14 @@ namespace SalsaNowWP8
         {
             VisualStateManager.GoToState(this, "TapOnPush", true);
             Event wnEvent;
-            if (PinToEventMap.ContainsKey((Image)sender))
-            {
-                wnEvent = PinToEventMap[(Image)sender];
-                DetailPanelEventName.Text = wnEvent.Name + " @ " + wnEvent.Address;
+            if (!PinToEventMap.ContainsKey((Image) sender)) 
+                return;
+            wnEvent = PinToEventMap[(Image)sender];
+            DetailPanelEventName.Text = wnEvent.Name + " @ " + wnEvent.Address;
 
-                BitmapImage image = new BitmapImage();
+            BitmapImage image = new BitmapImage();
 
-                DetailPanelEventImage.Source = new BitmapImage(new Uri("/Assets/pin_sq_down.32.png", UriKind.Relative));
-            }
-
+            DetailPanelEventImage.Source = new BitmapImage(new Uri("/Assets/pin_sq_down.32.png", UriKind.Relative));
         }
 
         private async void ReadEvents()
