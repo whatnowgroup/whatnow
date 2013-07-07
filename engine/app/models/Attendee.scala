@@ -13,10 +13,16 @@ import models._
 case class Attendee(eventId : Long, userId : String)
 
 object Attendee {
+  
+  val TABLE_NAME = "attendees";
+  
+  val EVENT_ID = "event_id";
+  val USER_ID = "user_id";
+  
   def attending(userId : String, event : Long) = {
     DB.withConnection { implicit connection =>
       SQL(
-        "insert into attendees (event_id, user_id) values ({eventid}, {userid});")
+        "insert into " + TABLE_NAME + " (" + EVENT_ID + ", " + USER_ID + ") values ({eventid}, {userid});")
         .on('eventid -> event, 'userid -> userId).executeUpdate
     }
   }
@@ -24,24 +30,28 @@ object Attendee {
   def unattending(userId : String, event : Int) = {
     DB.withConnection { implicit connection =>
       SQL(
-        "delete from attendees where event_id ={eventid} and user_id = {userid});")
+        "delete from " + TABLE_NAME + " where " + EVENT_ID + " ={eventid} and " + USER_ID + " = {userid});")
         .on('eventid -> event, 'userid -> userId).executeUpdate
     }
   }
   
   def eventAttendees(eventId: Long): List[String] = {
     DB.withConnection { implicit connection =>
-      SQL("select user_id u from attendees where event_id={eventId}")
+      SQL("select " + USER_ID + " u from " + TABLE_NAME + " where " + EVENT_ID + " = {eventId}")
       .on('eventId -> eventId)
       .as(get[String]("u") *);
     }
   }
   
+  def friendsAttending(eventId: Long, friends: List[String]): List[String] = {
+    eventAttendees(eventId).filter(a => friends.contains(a))
+  }
+  
   val deserialise = {
-    get[Long]("event_id") ~
-      get[String]("user_id") map {
-        case event_id ~ user_id =>
-          Attendee(event_id, user_id)
+    get[Long](EVENT_ID) ~
+      get[String](USER_ID) map {
+        case eventId ~ userId =>
+          Attendee(eventId, userId)
       }
   }
   

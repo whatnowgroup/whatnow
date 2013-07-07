@@ -30,7 +30,7 @@ object Application extends Controller {
   def newEvent = Action { implicit request =>
     request.body.asJson.map { json =>
       Event.create(
-        (json \ "eventName").as[String],
+        (json \ "name").as[String],
         (json \ "address").as[String],
         (json \ "latitude").as[String],
         (json \ "longitude").as[String])
@@ -53,9 +53,9 @@ object Application extends Controller {
       println(friendsAttend)
     }
     Ok(Json.parse("[" +
-      "{\"event_id\" : 1, \"event_name\" : \"Salsa\", \"event_address\" : \"M&M\", \"longitude\" : 151.209493, \"latitude\" : -33.859228, \"attending\" : 1}," +
-      "{\"event_id\" : 2, \"event_name\" : \"Salsa\", \"event_address\" : \"Bar 100\", \"longitude\" : 151.209388, \"latitude\" : -33.858218}, " +
-      "{\"event_id\" : 3, \"event_name\" : \"Salsa\", \"event_address\" : \"Ivy\", \"longitude\" : 151.207264, \"latitude\" : -33.86663}]"))
+      "{\"id\" : 1, \"name\" : \"Salsa\", \"address\" : \"M&M\", \"longitude\" : 151.209493, \"latitude\" : -33.859228, \"attending\" : 1}," +
+      "{\"id\" : 2, \"name\" : \"Salsa\", \"address\" : \"Bar 100\", \"longitude\" : 151.209388, \"latitude\" : -33.858218}, " +
+      "{\"id\" : 3, \"name\" : \"Salsa\", \"address\" : \"Ivy\", \"longitude\" : 151.207264, \"latitude\" : -33.86663}]"))
   }
 
   def attending(eventId : Int, userId : String) = Action {
