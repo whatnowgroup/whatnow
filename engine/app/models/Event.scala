@@ -11,8 +11,8 @@ import models._
 case class Event(id: Long,
                  name: String,
                  address: String,
-                 latitude: String,
-                 longitude: String,
+                 latitude: Double,
+                 longitude: Double,
                  attending: Boolean = false,
                  description: String = "",
                  shortDescription: String = "",
@@ -93,8 +93,8 @@ object Event {
     get[Long](ID) ~
       get[String](NAME) ~
       get[String](ADDRESS) ~
-      get[String](LATITUDE) ~
-      get[String](LONGITUDE) map {
+      get[Double](LATITUDE) ~
+      get[Double](LONGITUDE) map {
         case id ~ name ~ address ~ latitude ~ longitude =>
           Event(id, name, address, latitude, longitude)
       }
@@ -104,8 +104,8 @@ object Event {
     get[Long](ID) ~
       get[String](NAME) ~
       get[String](ADDRESS) ~
-      get[String](LATITUDE) ~
-      get[String](LONGITUDE) ~
+      get[Double](LATITUDE) ~
+      get[Double](LONGITUDE) ~
       get[String](DESC) ~
       get[String](SHORT_DESC) ~
       get[Double](RATING) map {

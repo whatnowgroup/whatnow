@@ -24,7 +24,7 @@ object EventRecurring {
   val INTERVAL = "recurring_interval";
   val START_DATE = "recurring_start_date";
   val END_DATE = "recurring_end_date";
-  val EVENT_ID = "event_id";
+  val EVENT_ID = "recurring_event_id";
 
   def getEventRecurring(eventId: Long): EventRecurring = {
     DB.withConnection { implicit connection =>
@@ -41,10 +41,10 @@ object EventRecurring {
       get[String](UNIT) ~
       get[Int](INTERVAL) ~
       get[Long](START_DATE) ~
-      get[Long](END_DATE) ~
+      get[Option[Long]](END_DATE) ~
       get[Long](EVENT_ID) map {
         case id ~ unit ~ interval ~ startDate ~ endDate ~ eventId =>
-          EventRecurring(id, unit, interval, startDate, endDate, eventId)
+          EventRecurring(id, unit, interval, startDate, endDate.getOrElse(-1L), eventId)
       }
   }
 

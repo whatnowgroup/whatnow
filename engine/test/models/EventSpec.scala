@@ -23,8 +23,8 @@ class EventSpec extends WhatNowTestSpec {
         event.id must equalTo(1L)
         event.name must equalTo("Salsa")
         event.address must equalTo("M&M")
-        event.latitude must equalTo("-33.859228")
-        event.longitude must equalTo("151.209493")
+        event.latitude must equalTo(-33.859228)
+        event.longitude must equalTo(151.209493)
       }
     }
 

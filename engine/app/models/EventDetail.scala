@@ -32,10 +32,15 @@ object EventDetail {
     val friendsAttending = Attendee.friendsAttending(eventId, Nil)
     val eventRecurring = EventRecurring.getEventRecurring(eventId)
     
+    val mainImageUrl = imageList match {
+      case List() => "";
+      case x :: xs => x.imageUrl;
+    }
+    
     EventDetail(
         event.id, event.name, event.address, 
         event.shortDescription, event.description, event.rating,
-        imageList.head.imageUrl, imageList.map(x => x.imageUrl), friendsAttending, 
+        mainImageUrl, imageList.map(x => x.imageUrl), friendsAttending, 
         attendees.size,
         event.attending, eventRecurring.recurringStartDate, eventRecurring
         )
