@@ -5,8 +5,6 @@ import play.api.libs.json._
 import play.api.Play.current
 import anorm._
 import anorm.SqlParser._
-import play.api.Logger
-import models._
 
 case class EventRecurring(id: Long,
                           recurringUnit: String,
@@ -17,18 +15,18 @@ case class EventRecurring(id: Long,
 
 object EventRecurring {
 
-  val TABLE_NAME = "event_recurrings";
+  val EVENT_RECURRINGS_TABLE_NAME = "event_recurrings"
 
-  val ID = "id";
-  val UNIT = "recurring_unit";
-  val INTERVAL = "recurring_interval";
-  val START_DATE = "recurring_start_date";
-  val END_DATE = "recurring_end_date";
-  val EVENT_ID = "recurring_event_id";
+  val ID = "event_recurring_id"
+  val UNIT = "recurring_unit"
+  val INTERVAL = "recurring_interval"
+  val START_DATE = "recurring_start_date"
+  val END_DATE = "recurring_end_date"
+  val EVENT_ID = "recurring_event_id"
 
   def getEventRecurring(eventId: Long): EventRecurring = {
     DB.withConnection { implicit connection =>
-      SQL("select * from " + TABLE_NAME + " where " + EVENT_ID + " = {eventId};")
+      SQL("select * from " + EVENT_RECURRINGS_TABLE_NAME + " where " + EVENT_ID + " = {eventId};")
       .on('eventId -> eventId)
       .as(deserialise single)
     }

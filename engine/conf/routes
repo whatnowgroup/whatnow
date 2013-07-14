@@ -22,10 +22,9 @@ GET     /locations/ controllers.Application.locations(friendsList="")
 
 # Register interest in attending an event
 GET     /attending/:eventId/:userId     controllers.Application.attending(eventId:Int, userId:String)
-
 # De-register interest in attending an event
 GET /unattending/:eventId/:userId       controllers.Application.unattending(eventId:Int, userId:String)
 
 # Given a list of friends, give me all the friends who are attending events in a 10KM radius of my supplied lon/lat arguments
-#GET    /friendsAttending/:friendsList  controllers.Application.friendsAttending(friendsList:String)
+POST    /friendsAttending  controllers.Application.friendsAttending
 

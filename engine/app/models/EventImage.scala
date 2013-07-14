@@ -1,13 +1,9 @@
 package models
 
-import java.util.Date
 import play.api.db._
-import play.api.libs.json._
 import play.api.Play.current
 import anorm._
 import anorm.SqlParser._
-import play.api.Logger
-import models._
 import scala.math.Ordering
 
 case class EventImage(id: Long,
@@ -18,18 +14,18 @@ case class EventImage(id: Long,
 
 object EventImage {
 
-  val TABLE_NAME = "event_images"
+  val EVENT_IMAGES_TABLE_NAME = "event_images"
 
-  val ID = "id";
-  val IMAGE_URL = "image_url";
-  val URL_KIND = "url_kind";
-  val EVENT_ID = "event_id";
-  val IS_MAIN_IMAGE = "is_main_image";
+  val ID = "event_image_id"
+  val IMAGE_URL = "image_url"
+  val URL_KIND = "url_kind"
+  val EVENT_ID = "event_id"
+  val IS_MAIN_IMAGE = "is_main_image"
 
   def getEventImages(eventId: Long): List[EventImage] = {
     val images = DB.withConnection { implicit connection =>
       SQL("select * from " +
-        TABLE_NAME +
+        EVENT_IMAGES_TABLE_NAME +
         " where " + EVENT_ID + " = {eventId} " +
         " limit 20;").on('eventId -> eventId).as(deserialise *)
     }

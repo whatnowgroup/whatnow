@@ -5,8 +5,6 @@ import play.api.libs.json._
 import play.api.Play.current
 import anorm._
 import anorm.SqlParser._
-import play.api.Logger
-import models._
 
 case class Event(id: Long,
                  name: String,
@@ -16,27 +14,30 @@ case class Event(id: Long,
                  attending: Boolean = false,
                  description: String = "",
                  shortDescription: String = "",
-                 rating: Double = 0D)
+                 rating: Double = 0D,
+                 friends: List[String] = Nil)
 
 object Event {
 
-  val TABLE_NAME = "events";
+  val EVENTS_TABLE_NAME = "events"
 
-  val ID = "id";
-  val NAME = "event_name";
-  val ADDRESS = "event_address";
-  val LATITUDE = "event_latitude";
-  val LONGITUDE = "event_longitude";
-  val DESC = "event_description";
-  val SHORT_DESC = "event_short_description";
-  val RATING = "event_rating";
+  val ID = "event_id"
+  val NAME = "event_name"
+  val ADDRESS = "event_address"
+  val LATITUDE = "event_latitude"
+  val LONGITUDE = "event_longitude"
+  val DESC = "event_description"
+  val SHORT_DESC = "event_short_description"
+  val RATING = "event_rating"
 
-  def all(): List[Event] = populate
+  val FRIENDS = "event_friends"
+
+  def all(): List[Event] = populate()
 
   def create(eventName: String, address: String, longitude: String, latitude: String): Unit = {
     DB.withConnection { implicit connection =>
       SQL(
-        "insert into " + TABLE_NAME +
+        "insert into " + EVENTS_TABLE_NAME +
           "(" + NAME + ", " + ADDRESS + ", " + LATITUDE + ", " + LONGITUDE + ")" +
           " values " +
           "({name}, {address}, {latitude}, {longitude})")
@@ -50,7 +51,7 @@ object Event {
 
   def eventsAround(userId: String, longitudeLeft: String, longitudeRight: String, latitudeLeft: String, latitudeRight: String): List[Event] = {
     DB.withConnection { implicit connection =>
-      SQL("select * from " + TABLE_NAME + " e " +
+      SQL("select * from " + EVENTS_TABLE_NAME + " e " +
         "left join " + Attendee.TABLE_NAME + " a on e." + ID + "=a." + Attendee.EVENT_ID + " " +
         "where a." + Attendee.USER_ID + "={userId}" +
         "and e." + LONGITUDE + " between {longitudeLeft} and {longitudeRight}" +
@@ -78,13 +79,30 @@ object Event {
 
   def list(friendsList: List[String]): List[(Event, Option[Attendee])] = {
     val query =
-      "select * from " + TABLE_NAME + " e, " + Attendee.TABLE_NAME + " a where e." + ID + " = a." + Attendee.EVENT_ID + " and (1 = 0 " +
+      "select * from " + EVENTS_TABLE_NAME + " e, " + Attendee.TABLE_NAME + " a where e." + ID + " = a." + Attendee.EVENT_ID + " and (1 = 0 " +
         genInQuery("a." + Attendee.USER_ID, "or", friendsList) + ")"
     println(query)
 
     DB.withConnection { implicit connection =>
       SQL(query).as(Event.withAttendees *)
     }
+  }
+
+  def getMe(friends: List[String],
+            longitudeLeft: Double, longitudeRight: Double,
+            latitudeLeft: Double, latitudeRight: Double): Map[Event, List[String]] = {
+    val query =
+      "select * from " + EVENTS_TABLE_NAME + " e, " +
+        Attendee.TABLE_NAME +
+        " a where e." + ID + " = a." + Attendee.EVENT_ID +
+        " and e." + LONGITUDE + ">=" + longitudeLeft + " and e." + LONGITUDE + "<=" + longitudeRight +
+        " and e." + LATITUDE + ">=" + latitudeLeft + " and e." + LATITUDE + "<=" + latitudeRight +
+        " and (1 = 0 " + genInQuery("a." + Attendee.USER_ID, " or ", friends) + ")"
+
+    DB.withConnection { implicit connection =>
+      SQL(query).as(Event.withAttendees *)
+    } groupBy(x => x._1) mapValues (v => v.map(_._2.get.userId))
+
   }
 
   implicit val eventFormat = Json.format[Event]
@@ -97,6 +115,25 @@ object Event {
       get[Double](LONGITUDE) map {
         case id ~ name ~ address ~ latitude ~ longitude =>
           Event(id, name, address, latitude, longitude)
+      }
+  }
+
+  val deserialiseWithFriends = {
+    get[Long](ID) ~
+      get[String](NAME) ~
+      get[String](ADDRESS) ~
+      get[Double](LATITUDE) ~
+      get[Double](LONGITUDE) ~
+      get[String](DESC) ~
+      get[String](SHORT_DESC) ~
+      get[Double](RATING) ~
+      get[String](FRIENDS)  map {
+      case id ~
+        name ~ address ~
+        latitude ~ longitude ~
+        description ~ shortDescription ~ rating ~
+        friends =>
+      Event(id, name, address, latitude, longitude, true, description, shortDescription, rating, friends.split(",").toList)
       }
   }
 
@@ -113,20 +150,19 @@ object Event {
           name ~ address ~
           latitude ~ longitude ~
           description ~ shortDescription ~ rating =>
-
           Event(id, name, address, latitude, longitude, false, description, shortDescription, rating)
       }
   }
 
   def getEvent(eventId: Long): Event = {
     DB.withConnection { implicit connection =>
-      SQL("select * from " + TABLE_NAME + " where " + ID + " = {id};").on('id -> eventId).as(Event.deserialise.single)
+      SQL("select * from " + EVENTS_TABLE_NAME + " where " + ID + " = {id};").on('id -> eventId).as(Event.deserialise.single)
     }
   }
 
   def populate(): List[Event] = {
     DB.withConnection { implicit connection =>
-      SQL("select * from " + TABLE_NAME).as(Event.deserialise *)
+      SQL("select * from " + EVENTS_TABLE_NAME).as(Event.deserialise *)
     }
   }
 }

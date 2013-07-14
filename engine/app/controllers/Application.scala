@@ -4,8 +4,6 @@ import play.api._
 import play.api.libs.json._
 import play.api.mvc._
 
-import play.api.data._
-import play.api.data.Forms._
 
 import models._
 
@@ -20,7 +18,7 @@ object Application extends Controller {
       t => Json.toJson(t)
     })).as("application/json")
   }
-  
+
   def eventsAround(userId: String, longitudeLeft: String, longitudeRight: String, latitudeLeft: String, latitudeRight: String) = Action {
     Ok(Json.toJson(Event.eventsAround(userId, longitudeLeft, longitudeRight, latitudeLeft, latitudeRight).map {
       t => Json.toJson(t)
@@ -30,14 +28,14 @@ object Application extends Controller {
   def newEvent = Action { implicit request =>
     request.body.asJson.map { json =>
       Event.create(
-        (json \ "name").as[String],
-        (json \ "address").as[String],
-        (json \ "latitude").as[String],
-        (json \ "longitude").as[String])
+        (json \ Constants.NAME).as[String],
+        (json \ Constants.ADDRESS).as[String],
+        (json \ Constants.LATITUDE).as[String],
+        (json \ Constants.LONGITUDE).as[String])
       Ok("done")
     }.getOrElse {
       Logger.debug(request.body.toString())
-      BadRequest(request.body.toString());
+      BadRequest(request.body.toString())
     }
   }
 
@@ -47,7 +45,6 @@ object Application extends Controller {
   }
 
   def locations(friendsList : String) = Action {
-    val events = Event.all()
     if (!friendsList.isEmpty()) {
       val friendsAttend = Event.list((friendsList.split(",")).toList)
       println(friendsAttend)
@@ -66,6 +63,25 @@ object Application extends Controller {
   def unattending(eventId : Int, userId : String) = Action {
     Attendee.unattending(userId, eventId);
     Ok(Json.parse("{\"result\" : \"ok\"}"));
+  }
+
+  def friendsAttending = Action { implicit request =>
+    request.body.asJson.map { json =>
+      val friends = (json \ Constants.FRIENDS).as[List[String]]
+      val longitudeLeft = (json \ Constants.LONGITUDE_LEFT).as[Double]
+      val longitudeRight = (json \ Constants.LONGITUDE_RIGHT).as[Double]
+      val latitudeLeft = (json \ Constants.LATITUDE_LEFT).as[Double]
+      val latitudeRight = (json \ Constants.LATITUDE_RIGHT).as[Double]
+      val result = Event.getMe(friends, longitudeLeft, longitudeRight, latitudeLeft, latitudeRight)
+      val r = result.map (x => {
+        val e = x._1
+        Event(e.id, e.name, e.address, e.latitude, e.longitude, e.attending, e.description, e.shortDescription, e.rating, x._2)
+      }).toList
+      Ok(Json.toJson(r))
+    }.getOrElse {
+      Logger.debug(request.body.toString)
+      BadRequest(request.body.toString())
+    }
   }
 
 }
