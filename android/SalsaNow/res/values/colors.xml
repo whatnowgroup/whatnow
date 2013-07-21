@@ -1,0 +1,7 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+<resources>
+	<drawable name="ab_bg_black">#aa000000</drawable>
+	<drawable name="ab_bg_darkerGray">@android:color/darker_gray</drawable>
+	<drawable name="btn_bg_lighterGray">#fddd</drawable>
+</resources>
