@@ -11,15 +11,16 @@ case class Attendee(eventId : Long, userId : String)
 
 object Attendee {
   
-  val TABLE_NAME = "attendees"
-  
-  val EVENT_ID = "event_id"
-  val USER_ID = "user_id"
+  val ATTENDEES_TABLE_NAME = "attendees"
+
+  val ID = "attendee_id"
+  val EVENT_ID = "attendee_event_id"
+  val USER_ID = "attendee_user_id"
   
   def attending(userId : String, event : Long) = {
     DB.withConnection { implicit connection =>
       SQL(
-        "insert into " + TABLE_NAME + " (" + EVENT_ID + ", " + USER_ID + ") values ({eventid}, {userid});")
+        "insert into " + ATTENDEES_TABLE_NAME + " (" + EVENT_ID + ", " + USER_ID + ") values ({eventid}, {userid});")
         .on('eventid -> event, 'userid -> userId).executeUpdate
     }
   }
@@ -27,14 +28,14 @@ object Attendee {
   def unattending(userId : String, event : Int) = {
     DB.withConnection { implicit connection =>
       SQL(
-        "delete from " + TABLE_NAME + " where " + EVENT_ID + " ={eventid} and " + USER_ID + " = {userid});")
+        "delete from " + ATTENDEES_TABLE_NAME + " where " + EVENT_ID + " ={eventid} and " + USER_ID + " = {userid});")
         .on('eventid -> event, 'userid -> userId).executeUpdate
     }
   }
   
   def eventAttendees(eventId: Long): List[String] = {
     DB.withConnection { implicit connection =>
-      SQL("select " + USER_ID + " u from " + TABLE_NAME + " where " + EVENT_ID + " = {eventId}")
+      SQL("select " + USER_ID + " u from " + ATTENDEES_TABLE_NAME + " where " + EVENT_ID + " = {eventId}")
       .on('eventId -> eventId)
       .as(get[String]("u") *)
     }

@@ -84,4 +84,12 @@ object Application extends Controller {
     }
   }
 
+  def eventsWithAttendingStatus(userId: String) = Action { implicit request =>
+
+    Ok(Json.toJson(Event.populateWithAttendingStatus(userId).map {
+      t => Json.toJson(t)
+    })).as("application/json")
+
+  }
+
 }

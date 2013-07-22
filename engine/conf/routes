@@ -9,7 +9,8 @@ GET     /                           controllers.Application.index
 GET     /events                      controllers.Application.events
 POST    /events                      controllers.Application.newEvent
 POST    /events/:id/delete           controllers.Application.deleteEvent(id: Long)
-GET     /events/:id/:longitudeLeft/:longitudeRight/:latitudeLeft/:latitudeRight    controllers.Application.eventsAround(id, longitudeLeft, longitudeRight, latitudeLeft, latitudeRight) 
+GET     /events/:id/:longitudeLeft/:longitudeRight/:latitudeLeft/:latitudeRight    controllers.Application.eventsAround(id, longitudeLeft, longitudeRight, latitudeLeft, latitudeRight)
+GET     /events/:userId              controllers.Application.eventsWithAttendingStatus(userId: String)
 
 # Map static resources from the /public folder to the /assets URL path
 GET     /assets/*file               controllers.Assets.at(path="/public", file)
