@@ -1,7 +1,7 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
 <Deployment xmlns="http://schemas.microsoft.com/windowsphone/2012/deployment" AppPlatformVersion="8.0">
   <DefaultLanguage xmlns="" code="en-US" />
-  <App xmlns="" ProductID="{0f5c2518-6b07-40bc-b9a3-88b9e041a2e7}" Title="SalsaNowWP8" RuntimeType="Silverlight" Version="1.0.0.0" Genre="apps.normal" Author="SalsaNowWP8 author" Description="Sample description" Publisher="SalsaNowWP8" PublisherID="{e539cb8c-a2d7-4cb8-b953-5efaaa47bdd3}">
+  <App xmlns="" ProductID="{0f5c2518-6b07-40bc-b9a3-88b9e041a2e7}" Title="SalsaNowWP8" RuntimeType="Silverlight" Version="1.0.0.0" Genre="apps.normal" Author="WhatNow Group" Description="Sample description" Publisher="SalsaNowWP8" PublisherID="{e539cb8c-a2d7-4cb8-b953-5efaaa47bdd3}">
     <IconPath IsRelative="true" IsResource="false">Assets\ApplicationIcon.png</IconPath>
     <Capabilities>
       <Capability Name="ID_CAP_NETWORKING" />

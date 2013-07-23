@@ -1,14 +1,10 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-
-namespace SalsaNowWP8.ViewModel
+﻿namespace SalsaNowWP8.ViewModel
 {
     class Constants
     {
-        public static readonly string FacebookAppId = "238515489606358";
-        public static readonly string EventsSource = "http://123.243.70.36:9000/events";
+        public static readonly string FacebookAppId = "530396173664336";
+
+        public static readonly string EventsSourceLocal = "http://10.0.0.45:9000/events";
+        public static readonly string EventsSource = "http://ec2-54-252-187-159.ap-southeast-2.compute.amazonaws.com:9000/events";
     }
 }
